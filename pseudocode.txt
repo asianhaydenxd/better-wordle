@@ -1,0 +1,21 @@
+select a random word from a list of 5 letter words
+display a welcome message
+
+create a list for storing guesses
+
+while running game
+    display five empty spaces for letters
+    let the user type in the letters (store input as string)
+    
+    highlight the correctly positioned letters green
+    highlight the not correctly position correct letters yellow
+    highlight excess letters graey
+    highlight the not correcet letters grey
+    
+    if the input text matches the selected word
+        display "good job"
+        stop running game
+    if it doesnt
+        display "you suck"
+    
+    save guess to list

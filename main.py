@@ -37,7 +37,7 @@ class Wordle:
                 print('_', end=' ')
         print('')
 
-    def type(self) -> str:
+    def type(self) -> None:
         self.refresh()
         while True:
             char = self.getch.impl()
@@ -49,15 +49,18 @@ class Wordle:
                 else:
                     self.header = ''
                     self.guesses.append(self.input)
-                    out = self.input
                     self.input = ''
-                    return out
+                    return
             elif char == '\x7f':
                 self.input = self.input[:-1]
             elif char in LETTERS and len(self.input) < 5:
                 self.input += char
         
             self.refresh()
+
+    def start_game(self):
+        while len(self.guesses) < 6:
+            self.type()
 
 def main():
     with open('words.txt', 'r') as words_txt:
@@ -66,7 +69,6 @@ def main():
 
     wordle = Wordle(word_list)
 
-    while len(wordle.guesses) < 6:
-        wordle.type()
+    wordle.start_game()
 
 if __name__ == '__main__': main()

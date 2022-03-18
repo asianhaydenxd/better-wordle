@@ -44,6 +44,8 @@ class Wordle:
             if char == '.':
                 if len(self.input) < 5:
                     self.header = 'Not enough letters'
+                if self.input not in self.words:
+                    self.header = 'Not in word list'
                 else:
                     self.header = ''
                     self.guesses.append(self.input)

@@ -39,9 +39,10 @@ class Wordle:
 
     def type(self) -> None:
         self.refresh()
+        
         while True:
             char = self.getch.impl()
-            if char == '.':
+            if char == ' ':
                 if len(self.input) < 5:
                     self.header = 'Not enough letters'
                 if self.input not in self.words:
@@ -61,6 +62,7 @@ class Wordle:
     def start_game(self):
         while len(self.guesses) < 6:
             self.type()
+            if self.guesses[-1] == self.word: break
 
 def main():
     with open('words.txt', 'r') as words_txt:
@@ -68,7 +70,7 @@ def main():
                      for line in words_txt.readlines()]
 
     wordle = Wordle(word_list)
-
+    
     wordle.start_game()
 
 if __name__ == '__main__': main()

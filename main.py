@@ -136,7 +136,7 @@ class Wordle:
         while True:
             char = self.getch.impl()
             self.header = ''
-            if char == ' ':
+            if char == '\r':
                 if len(self.input) < WORD_LENGTH:
                     self.header = '     Not enough letters'
                 elif self.input not in self.words:

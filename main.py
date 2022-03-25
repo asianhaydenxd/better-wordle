@@ -43,17 +43,18 @@ class Wordle:
 
         self.refresh()
 
+    def get_literal_tuples(self, guess):
+        return [ (letter, Color.GREEN) if letter == self.word[index] else \
+                 (letter, Color.YELLOW) if letter in self.word else \
+                 (letter, Color.GRAY) for index, letter in enumerate(guess) ]
+
     def get_color_tuples(self, guess):
-        first_string = [ (letter, Color.GREEN) if letter == self.word[index] else \
-                           (letter, Color.YELLOW) if letter in self.word else \
-                           (letter, Color.GRAY) for index, letter in enumerate(guess) ]
+        first_string = self.get_literal_tuples(guess)
         
-        second_string = [ (letter, Color.GREEN) if color == Color.GREEN else \
-                                   (letter, Color.YELLOW) if letter in self.word and first_string[:index].count((letter, Color.YELLOW)) < self.word.count(letter) - first_string.count((letter, Color.GREEN)) else \
-                                   (letter, Color.GRAY) for index, (letter, color) in enumerate(first_string) ]
-
-        return second_string
-
+        return [ (letter, Color.GREEN) if color == Color.GREEN else \
+                 (letter, Color.YELLOW) if letter in self.word and first_string[:index].count((letter, Color.YELLOW)) < self.word.count(letter) - first_string.count((letter, Color.GREEN)) else \
+                 (letter, Color.GRAY) for index, (letter, color) in enumerate(first_string) ]
+    
     def color_guess(self, guess) -> str:
         context_string = self.get_color_tuples(guess)
         
@@ -120,9 +121,12 @@ class Wordle:
             if self.is_game_won(): self.load(f'{len(self.guesses)}/{GUESSES}\n')
             else: self.load(f'X/{GUESSES}\n')
 
-            self.load('\n'.join([ ''.join(['🟩' if color == Color.GREEN else \
-                                   '🟨' if color == Color.YELLOW else \
-                                   '⬛' for letter, color in self.get_color_tuples(guess)]) for guess in self.guesses ]) + '\n')
+            self.load('\n'.join( [ ''.join(
+                                    [ '🟩' if color == Color.GREEN else \
+                                      '🟨' if color == Color.YELLOW else \
+                                      '⬛' for letter, color in self.get_color_tuples(guess) ]
+                                 ) for guess in self.guesses ] )
+                      + '\n')
             
         os.system('clear')
         print(self.screen)
